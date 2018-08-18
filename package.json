@@ -1,0 +1,24 @@
+{
+  "name": "lp4-quiz",
+  "version": "1.0.0",
+  "description": "Aplicativo desenvolvido para os professores poderem criar aulas mais interativas, criando quiz e questões que podem ser respondidos pelos alunos enquanto o professor acompanha.",
+  "main": "index.js",
+  "scripts": {
+    "test": "Sem testes"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haganicolau/lp4-quiz.git"
+  },
+  "keywords": [
+    "quiz",
+    "unialfa",
+    "lp4"
+  ],
+  "author": "hagamenon.oliveira <hagamenon.oliveira@unialfa.com.br> & alunos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haganicolau/lp4-quiz/issues"
+  },
+  "homepage": "https://github.com/haganicolau/lp4-quiz#readme"
+}
