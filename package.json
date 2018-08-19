@@ -1,10 +1,10 @@
 {
   "name": "lp4-quiz",
   "version": "1.0.0",
-  "description": "projeto para o direito",
+  "description": "Aplicativo desenvolvido para os professores poderem criar aulas mais interativas, criando quiz e questões que podem ser respondidos pelos alunos enquanto o professor acompanha.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "Sem testes"
   },
   "repository": {
     "type": "git",
@@ -12,10 +12,10 @@
   },
   "keywords": [
     "quiz",
-    "projeto",
-    "unialfa"
+    "unialfa",
+    "lp4"
   ],
-  "author": "hagamenon.olivera <hagamenon.oliveira@unialfa.com.br>",
+  "author": "hagamenon.oliveira <hagamenon.oliveira@unialfa.com.br> & alunos",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/haganicolau/lp4-quiz/issues"
