@@ -1,0 +1,24 @@
+{
+  "name": "lp4-quiz",
+  "version": "1.0.0",
+  "description": "projeto para o direito",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/haganicolau/lp4-quiz.git"
+  },
+  "keywords": [
+    "quiz",
+    "projeto",
+    "unialfa"
+  ],
+  "author": "hagamenon.olivera <hagamenon.oliveira@unialfa.com.br>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/haganicolau/lp4-quiz/issues"
+  },
+  "homepage": "https://github.com/haganicolau/lp4-quiz#readme"
+}
