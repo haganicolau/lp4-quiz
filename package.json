@@ -20,5 +20,9 @@
   "bugs": {
     "url": "https://github.com/haganicolau/lp4-quiz/issues"
   },
-  "homepage": "https://github.com/haganicolau/lp4-quiz#readme"
+  "homepage": "https://github.com/haganicolau/lp4-quiz#readme",
+  "dependencies": {
+    "consign": "^0.1.6",
+    "express": "^4.16.3"
+  }
 }

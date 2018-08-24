@@ -35,7 +35,16 @@ var funcao = function(){
 
 /** função assíncrona, ou seja, quando executado o setTimeout o primeiro parâmetro é uma função anônima (nao possui nome), e o segundo parâmetro é o tempo de espera.  é uma função assíncrona pq não se sabe o tempo de execução e quando irá retornar, assim enquanto espera-se o tempo de execução da função, o resto do codigo é executado*/
 setTimeout(function(){
-    console.log('função assíncrona terminou!');
+  //  console.log('função assíncrona terminou!');
 }, 3000);
-console.log('executou o resto do código');
+//console.log('executou o resto do código');
 
+
+
+var config = require('./config/custom-express');
+var app = config();
+
+
+app.listen(3000, function(){
+    console.log('escutando a porta 3000');
+})
