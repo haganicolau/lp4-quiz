@@ -19,10 +19,26 @@ var express = require('express');
 */
 var consign = require('consign');
 
+/** body-parser:
+ *  Permite manipular corpos da requisição http disponível sob a propriedade req.body.
+ *  Nota Como a forma do req.body é baseada na entrada controlada pelo usuário, todas as 
+ *  propriedades e valores neste objeto não são confiáveis e devem ser validados.
+ * 
+ */
+var bodyParse = require('body-parser');
+
 module.exports = function(){
     var app = express();
+    app.use(bodyParse.json());
+
+    /**
+     * arquitetura do projeto, temos:
+     *  -controllers: aqui temos toda regra de negocio voltada para servir por meio das rotas e verbos http
+     *  -persistencia: diretório que se encontra tudo relacionado com dao e banco
+     */
     consign()
         .include('controllers')
+        .then('persistencia')
         .into(app);
 
     return app;
