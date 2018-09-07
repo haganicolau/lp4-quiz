@@ -18,6 +18,30 @@ class usuarioDAO{
             console.log(error);
         }
     }
+
+    findAll(callback){
+        try{
+            this._con.query('SELECT * FROM usuario', callback);
+        } catch(error){
+            console.log(error);
+        }
+    }
+
+    findById(id, callback){
+        try{
+            this._con.query('SELECT * FROM usuario where usuario.id = ?', id, callback);
+        } catch(error){
+            console.log(error);
+        }
+    }
+
+    update(id, usuario, callback){
+        try{
+            this._con.query('UPDATE usuario SET ? WHERE id = ? ', [usuario, id], callback);
+        } catch(error){
+            console.log(error);
+        }
+    }
 }
 
 /**

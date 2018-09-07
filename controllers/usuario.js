@@ -8,7 +8,41 @@ module.exports = function(app){
     /** GET /usuario
      *  rota que obtém lista de usuários (find all)
      */
-    app.get('/usuario', function(request, response){
+    app.get('/usuario', function(req, resp){
+        var con = app.persistencia.connectionFactory;
+        var dao = new app.persistencia.usuarioDAO(con);
+        dao.findAll(function(exception, result){
+            console.log(exception);
+            if(exception){
+                resp.status(500);
+                resp.send({"message":"Error inesperado"});
+            }
+
+            if(result.length == 0){
+                resp.status(404);
+                resp.send({"message":"usuario não encontrado"});
+            }
+
+            resp.status(200);
+            resp.send(result);
+        });
+    });
+
+    app.get('/usuario/:id', function(req, resp){
+        data = req.params;
+        var con = app.persistencia.connectionFactory;
+        var dao = new app.persistencia.usuarioDAO(con);
+
+        dao.findById(data.id, function(exception, result){
+            
+            if(result.length == 0){
+                resp.status(404);
+                resp.send({"message":"usuario não encontrado"});
+            }
+
+            console.log(exception);
+            resp.send(result[0]);
+        });
         
     });
     
@@ -30,18 +64,50 @@ module.exports = function(app){
          * que é responsável por manipular o retorno da fução assíncrona. 
          */
         dao.create(data, function(exception, result){
-            console.log(exception);  
-            console.log(result);
+            if(exception){
+                resp.status(500);
+                resp.send({"mensagem":"erro ao salvar usuário"});
+                console.log(exception);
+            }
+           resp.status(201);
+           resp.send(data);
         });
-
-        console.log('teste');
     });
     
     /** PUT /usuario 
      *  rota que permite alterar um usuário pelo id
     */
-    app.put('/usuario', function(req, resp){
+    app.put('/usuario/:id', function(req, resp){
+        param = req.params;
+        novo = req.body;
 
+        var con = app.persistencia.connectionFactory;
+        var dao = new app.persistencia.usuarioDAO(con);
+
+        dao.findById(param.id, function(exception, result){
+
+            if(exception){
+                resp.status(500);
+                resp.send({"mensagem":"erro ao salvar usuário"});
+                console.log(exception);
+            }
+            
+            if(result.length == 0){
+                resp.status(404);
+                resp.send({"message":"usuario não encontrado"});
+            }
+
+            antigo = result[0];
+            antigo.nome = novo.nome;
+            antigo.email = novo.email;
+            antigo.senha = novo.senha;
+
+            dao.update(param.id, antigo, function(exception, result){
+                console.log(exception);
+                resp.send({"messagem":"alterado com sucesso"});
+            });
+            
+        });
     });
 
     /** DELTE /usuario 
