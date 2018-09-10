@@ -29,6 +29,11 @@ var bodyParse = require('body-parser');
 
 module.exports = function(){
     var app = express();
+    
+    /**
+     * configurar para que eu consiga manipular o body do http usando json
+    */
+    app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParse.json());
 
     /**
