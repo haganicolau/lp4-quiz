@@ -7,7 +7,7 @@ class usuarioDAO{
     }
 
     /**
-     * 
+     * cria novo usuário por meio da query insert
      * @param usuario - dados do usuario
      * @param callback - função de retorno 
      */
@@ -19,6 +19,10 @@ class usuarioDAO{
         }
     }
 
+    /**
+     * busca todos os usuários por meio do select
+     * @param callback - função de retorno, já que é uma função assíncrona 
+     */
     findAll(callback){
         try{
             this._con.query('SELECT * FROM usuario', callback);
@@ -27,6 +31,11 @@ class usuarioDAO{
         }
     }
 
+    /**
+     * Busca o usuário a partir do id passado na requisição
+     * @param id - id do usuário
+     * @param callback - função de retorno 
+     */
     findById(id, callback){
         try{
             this._con.query('SELECT * FROM usuario where usuario.id = ?', id, callback);
@@ -35,6 +44,12 @@ class usuarioDAO{
         }
     }
 
+    /**
+     * Altera os dados do usuário a partir do id passado por parâmetro e os dados do usuário
+     * @param id - id do usuário que será alterado
+     * @param usuario - dados do usuário que serão persistido no banco 
+     * @param callback - função de retorno 
+     */
     update(id, usuario, callback){
         try{
             this._con.query('UPDATE usuario SET ? WHERE id = ? ', [usuario, id], callback);
