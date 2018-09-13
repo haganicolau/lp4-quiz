@@ -33,7 +33,7 @@ module.exports = function(){
     /**
      * configurar para que eu consiga manipular o body do http usando json
     */
-    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParse.urlencoded({ extended: false }));
     app.use(bodyParse.json());
 
     /**
@@ -44,6 +44,7 @@ module.exports = function(){
     consign()
         .include('controllers')
         .then('persistencia')
+        .then('services')
         .into(app);
 
     return app;

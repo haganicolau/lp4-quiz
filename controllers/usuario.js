@@ -12,15 +12,26 @@ module.exports = function(app){
         var con = app.persistencia.connectionFactory;
         var dao = new app.persistencia.usuarioDAO(con);
         dao.findAll(function(exception, result){
-            console.log(exception);
             if(exception){
                 resp.status(500);
                 resp.send({"message":"Error inesperado"});
+                return;
             }
 
             if(result.length == 0){
                 resp.status(404);
                 resp.send({"message":"usuario não encontrado"});
+                return;
+            }
+
+            /**
+             * exceção genérica
+             */
+            if(exception){
+                resp.status(500);
+                resp.send({"mensagem":"erro ao buscar usuário"});
+                console.log(exception);
+                return;
             }
 
             resp.status(200);
@@ -43,11 +54,23 @@ module.exports = function(app){
         dao.findById(data.id, function(exception, result){
             
             /** 
-             * tratamento se result vier vazio, quer dizer que não foi encontrado nenhum usuário, assim retorna 404, código http para não encontrado
+             * tratamento se result vier vazio, quer dizer que não foi encontrado 
+             *  nenhum usuário, assim retorna 404, código http para não encontrado
             */
             if(result.length == 0){
                 resp.status(404);
                 resp.send({"message":"usuario não encontrado"});
+                return;
+            }
+
+            /**
+             * exceção genérica
+             */
+            if(exception){
+                resp.status(500);
+                resp.send({"mensagem":"erro ao buscar usuário"});
+                console.log(exception);
+                return;
             }
 
             /**
@@ -68,19 +91,49 @@ module.exports = function(app){
         /**objetos quer me permite conectar no banco e maninpular as operações */
         var con = app.persistencia.connectionFactory;
         var dao = new app.persistencia.usuarioDAO(con);
-        
+
+        /**
+         * valida se os dados estão corretos conforme regra de negócio
+         */
+        var service = new app.services.usuarioService();
+        response = service.validarDados(data);
+        if(!response.status){
+            resp.status(400);
+            resp.json({"message": response.message});   
+            return;
+        }
+
         /**função assíncrona, como não sabemos quanto tempo irá demorar a conexão com banco. 
          * É importante que as operações sejam assíncronas. O quer dizer que a função create
          * será realizada, porém não será aguardado um retorno, as rotinas irão continuar sem 
          * um retorno de create, por isto tempos a função anônima passada no segundo parâmetro 
          * que é responsável por manipular o retorno da fução assíncrona. 
          */
+        data.deletado = 0;
         dao.create(data, function(exception, result){
             if(exception){
+
+                /**
+                 * verifica se a exceção é de chave única duplicada, no qual email se enquadra 
+                 * na exceção
+                 */
+                if(exception.code === 'ER_DUP_ENTRY'){
+                    resp.status(400);
+                    resp.send({"mensagem":"Email já cadastrado"});
+                    return;
+                }
+                /**
+                 * error genéricos
+                 */
                 resp.status(500);
                 resp.send({"mensagem":"erro ao salvar usuário"});
                 console.log(exception);
+                return;
             }
+
+            /**
+             * sucesso no cadastro
+             */
            resp.status(201);
            resp.send(data);
         });
@@ -112,6 +165,7 @@ module.exports = function(app){
                 resp.status(500);
                 resp.send({"mensagem":"erro ao salvar usuário"});
                 console.log(exception);
+                return;
             }
             
             /**
@@ -120,6 +174,7 @@ module.exports = function(app){
             if(result.length == 0){
                 resp.status(404);
                 resp.send({"message":"usuario não encontrado"});
+                return;
             }
 
             /**
@@ -131,11 +186,29 @@ module.exports = function(app){
             antigo.email = novo.email;
             antigo.senha = novo.senha;
 
+
             /**
              * Passo 2, alteramos os dados do usuário por meio de uma função assíncrona de update no banco
              */
             dao.update(param.id, antigo, function(exception, result){
-                console.log(exception);
+
+                /**
+                 * verifica se a exceção é de chave única duplicada, no qual email se enquadra 
+                 * na exceção
+                 */
+                if(exception){
+                    if(exception.code === 'ER_DUP_ENTRY'){
+                        resp.status(400);
+                        resp.send({"mensagem":"Email já cadastrado"});
+                        return;
+                    }
+
+                    resp.status(500);
+                    resp.send({"mensagem":"erro ao alterar usuário"});
+                    console.log(exception);
+                    return;
+                }
+
                 resp.send({"messagem":"alterado com sucesso"});
             });
             
@@ -145,7 +218,49 @@ module.exports = function(app){
     /** DELETE /usuario 
      *  rota que permite deletar um usuário existente
     */
-    app.delete('/usuario', function(req, resp){
+    app.delete('/usuario/:id', function(req, resp){
+        dado = req.params;
+        var con = app.persistencia.connectionFactory;
+        var dao = new app.persistencia.usuarioDAO(con);
+
+        /**
+         * primeira fase: buscar dados 
+         */
+        dao.findById(dado.id, function(exception, result){
+            if(exception){
+                resp.status(500);
+                resp.send({"mensagem":"erro ao alterar usuário"});
+                console.log(exception);
+                return;
+            }
+            
+            /**
+             * Verifica se usário existe
+             */
+            if(!result || result.length == 0){
+                resp.status(404);
+                resp.send({"message":"usuario não encontrado"});
+                return;
+            }
+            /** deleção lógica */
+            dao.delete(dado.id, function(exception, result){
+                /**
+                 * se houver exceção joga exceção
+                 */
+                if(exception){
+                    resp.status(500);
+                    resp.send({"mensagem":"erro ao deletar usuário"});
+                    console.log(exception);
+                    return;
+                }
+
+                /**
+                 * se ocorreu tudo bem
+                 */
+                resp.status(200);
+                resp.send({"message":"Deletado com sucesso"});
+            });
+        })
 
     })
 }

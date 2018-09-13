@@ -3,10 +3,14 @@
  ****************************************************/
 
 /** objeto node*/
-var pessoa = {
+var antigo = {
     "nome": "hagamenon",
     "telefone": "123456",
     "cpf": "123456"
+};
+
+var novo = {
+    "nome": "hagamenon nicolau"
 };
 /*array de objetos node*/ 
 var pessoas = [

@@ -25,7 +25,7 @@ class usuarioDAO{
      */
     findAll(callback){
         try{
-            this._con.query('SELECT * FROM usuario', callback);
+            this._con.query('SELECT * FROM usuario where deletado = 0', callback);
         } catch(error){
             console.log(error);
         }
@@ -38,7 +38,7 @@ class usuarioDAO{
      */
     findById(id, callback){
         try{
-            this._con.query('SELECT * FROM usuario where usuario.id = ?', id, callback);
+            this._con.query('SELECT * FROM usuario where usuario.id = ? and deletado = 0', id, callback);
         } catch(error){
             console.log(error);
         }
@@ -52,7 +52,20 @@ class usuarioDAO{
      */
     update(id, usuario, callback){
         try{
-            this._con.query('UPDATE usuario SET ? WHERE id = ? ', [usuario, id], callback);
+            this._con.query('UPDATE usuario SET ? WHERE id = ?', [usuario, id], callback);
+        } catch(error){
+            console.log(error);
+        }
+    }
+
+    /**
+     * 
+     * @param id - id do usuaŕio que será excluído logicamente 
+     * @param callback - função assíncrona 
+     */
+    delete(id, callback){
+        try{
+            this._con.query('UPDATE usuario SET deletado = 1 WHERE id = ? ', id, callback);
         } catch(error){
             console.log(error);
         }
