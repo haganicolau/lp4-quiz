@@ -24,9 +24,9 @@ export class ListaUsuarioPage {
   ) {
 
     this.usuarios = [
-      {id: 1, name: "Nome 1", email: "email1@email.com", profile: 1},
-      {id: 2, name: "Nome 2", email: "email2@email.com", profile: 1},
-      {id: 3, name: "Nome 3", email: "email3@email.com", profile: 1}
+      {id: 1, nome: "Nome 1", email: "email1@email.com", profile: 1},
+      {id: 2, nome: "Nome 2", email: "email2@email.com", profile: 1},
+      {id: 3, nome: "Nome 3", email: "email3@email.com", profile: 1}
     ];
 
   }
