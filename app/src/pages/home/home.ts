@@ -13,4 +13,8 @@ export class HomePage {
 
   }
 
+  avancarListaUsuario(){
+    this.navCtrl.push(ListaUsuarioPage.name);
+  }
+
 }

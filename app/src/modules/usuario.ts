@@ -2,5 +2,6 @@ export class Usuario {
     id: number;
     nome: string;
     email: string;
-    profile: number;
+    perfil: number;
+    senha: string;
 }
