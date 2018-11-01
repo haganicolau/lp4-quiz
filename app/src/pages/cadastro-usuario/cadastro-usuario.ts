@@ -41,8 +41,9 @@ export class CadastroUsuarioPage {
           this.error.message = '';
           this.success.condicao = true;
           this.success.message = "Criado com sucesso"
-
-          this.navCtrl.push(CadastroUsuarioPage.name)
+          this.usuario = new Usuario();
+          this.senha = "";
+          this.senha_confirma = "";
           
         }, (err) => {
           console.log(err);

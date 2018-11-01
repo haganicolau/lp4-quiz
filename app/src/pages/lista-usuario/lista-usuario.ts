@@ -20,6 +20,9 @@ import { CadastroUsuarioPage } from '../cadastro-usuario/cadastro-usuario';
 export class ListaUsuarioPage {
 
   usuarios: Usuario[];
+  http : HttpClient;
+  load;
+  alert;
 
   constructor(
     public navCtrl: NavController, 
@@ -29,12 +32,13 @@ export class ListaUsuarioPage {
     private _alert: AlertController
   ) {
 
-    let load = _loadCtr.create(
+    this.http = _http;
+    this.load = _loadCtr.create(
       {content: "Carregando..."}
     );
-    load.present();
+    this.load.present();
 
-    let alert = _alert.create(
+    this.alert = _alert.create(
       {
         title:"Falha na Conexão",
         subTitle: "Não foi possível carregar lista de usuários",
@@ -43,29 +47,24 @@ export class ListaUsuarioPage {
         ]
       }
     );
+  }
 
-    _http.get<Usuario[]>("http://localhost:3000/usuario")
+  ionViewDidLoad() {
+    this.http.get<Usuario[]>("http://localhost:3000/usuario")
       .subscribe(
         (users) =>{
           console.log(users);
           this.usuarios = users;
-          load.dismiss();
+          this.load.dismiss();
         },
         (err: HttpErrorResponse) =>{
-          load.dismiss();
-          alert.present();
+          this.load.dismiss();
+          this.alert.present();
         }
       );
-
-
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ListaUsuarioPage');
   }
 
   avancarCadastroUsuario(){
     this.navCtrl.push(CadastroUsuarioPage.name)
   }
-
 }
