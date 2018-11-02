@@ -23,32 +23,25 @@ export class CadastroUsuarioPage {
     public http: HttpClient,
   ) {
     this.usuario = new Usuario();
+    if(this.navParams.get('usuarioSelecionado')){
+      this.usuario = this.navParams.get('usuarioSelecionado');
+    }
+
   }
 
-  salvar(){
+  verficaSalvarEditar(){
     this.error.condicao = false;
     this.validarDados();
-    console.log(this.error.condicao);
     
     if(!this.error.condicao){
       this.usuario.senha = this.senha;
 
-      this.http.post("http://localhost:3000/usuario", 
-      this.usuario
-        ).subscribe(res => {
-          console.log(res);
-          this.error.condicao = false;
-          this.error.message = '';
-          this.success.condicao = true;
-          this.success.message = "Criado com sucesso"
-          this.usuario = new Usuario();
-          this.senha = "";
-          this.senha_confirma = "";
-          
-        }, (err) => {
-          console.log(err);
-        });
-
+      if(this.usuario.id){
+        this.editar();
+        }
+        else{
+          this.salvar();
+        }
     }
   }
 
@@ -81,6 +74,38 @@ export class CadastroUsuarioPage {
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad CadastroUsuarioPage');
+  }
+
+  salvar(){
+    this.http.post("http://localhost:3000/usuario", 
+      this.usuario
+        ).subscribe(res => {
+          console.log(res);
+          this.error.condicao = false;
+          this.error.message = '';
+          this.success.condicao = true;
+          this.success.message = "Criado com sucesso"
+          this.usuario = new Usuario();
+          
+        }, (err) => {
+          console.log(err);
+        });
+  }
+
+  editar(){
+    this.http.put("http://localhost:3000/usuario/" + this.usuario.id, 
+      this.usuario
+        ).subscribe(res => {
+          console.log(res);
+          this.error.condicao = false;
+          this.error.message = '';
+          this.success.condicao = true;
+          this.success.message = "Criado com sucesso"
+          this.usuario = new Usuario();
+          
+        }, (err) => {
+          console.log(err);
+        });
   }
 
 }

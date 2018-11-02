@@ -4,6 +4,7 @@ import { Usuario } from '../../modules/usuario';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Title } from '@angular/platform-browser';
 import { CadastroUsuarioPage } from '../cadastro-usuario/cadastro-usuario';
+import { VisualizarUsuarioPage } from '../visualizar-usuario/visualizar-usuario';
 
 /**
  * Generated class for the ListaUsuarioPage page.
@@ -67,4 +68,11 @@ export class ListaUsuarioPage {
   avancarCadastroUsuario(){
     this.navCtrl.push(CadastroUsuarioPage.name)
   }
+
+  seleciona(user : Usuario){
+    this.navCtrl.push(VisualizarUsuarioPage.name, {
+      usuarioSelecionado: user
+    });
+  }
+
 }
